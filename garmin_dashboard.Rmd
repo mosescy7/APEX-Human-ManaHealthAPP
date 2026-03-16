@@ -1,0 +1,412 @@
+---
+title: "Garmin Connect — Health Dashboard"
+author: "Moses"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.width = 10, fig.height = 5)
+
+# Install any missing packages automatically
+pkgs <- c("tidyverse", "plotly", "lubridate", "scales", "knitr", "DT")
+new  <- pkgs[!pkgs %in% installed.packages()[,"Package"]]
+if (length(new)) install.packages(new, repos = "https://cloud.r-project.org")
+
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(scales)
+library(DT)
+
+DATA_DIR <- file.path(dirname(rstudioapi::getSourceEditorContext()$path), "garmin_data")
+# fallback if not in RStudio
+if (!dir.exists(DATA_DIR)) DATA_DIR <- file.path(getwd(), "garmin_data")
+
+read_csv_safe <- function(name) {
+  path <- file.path(DATA_DIR, paste0(name, ".csv"))
+  if (file.exists(path)) read_csv(path, show_col_types = FALSE) else tibble()
+}
+```
+
+> **Before knitting:** run `python fetch_garmin.py` once in the terminal to download
+> your data into the `garmin_data/` folder. Then click **Knit** (or press `Ctrl+Shift+K`).
+
+---
+
+# Steps
+
+```{r steps}
+df <- read_csv_safe("steps") %>%
+  mutate(date = as.Date(date),
+         color = ifelse(steps >= 10000, "Goal met", "Below goal"))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = date, y = steps, fill = color,
+                      text = paste0(format(date, "%b %d"), "\n", comma(steps), " steps"))) +
+    geom_col(width = 0.8) +
+    geom_hline(yintercept = 10000, linetype = "dashed", colour = "red", linewidth = 0.7) +
+    annotate("text", x = min(df$date), y = 10500, label = "10,000 goal",
+             hjust = 0, colour = "red", size = 3.5) +
+    scale_fill_manual(values = c("Goal met" = "#27ae60", "Below goal" = "#95a5a6")) +
+    scale_y_continuous(labels = comma) +
+    labs(title = "Daily Steps — Last 30 Days", x = NULL, y = "Steps", fill = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+
+  ggplotly(p, tooltip = "text") %>% layout(hovermode = "x unified")
+
+  cat(sprintf("**30-day average:** %s steps/day  \n", comma(round(mean(df$steps)))))
+  cat(sprintf("**Days ≥ 10,000:** %d / %d\n", sum(df$steps >= 10000), nrow(df)))
+} else {
+  cat("No steps data found. Run fetch_garmin.py first.")
+}
+```
+
+---
+
+# Heart Rate
+
+```{r heart-rate}
+df <- read_csv_safe("heart_rate") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(!is.na(resting_hr))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = date)) +
+    geom_ribbon(aes(ymin = min_hr, ymax = max_hr), fill = "#fadbd8", alpha = 0.5) +
+    geom_line(aes(y = max_hr, colour = "Max HR"), linetype = "dotted", linewidth = 0.8) +
+    geom_line(aes(y = resting_hr, colour = "Resting HR"), linewidth = 1.5) +
+    geom_point(aes(y = resting_hr, colour = "Resting HR"), size = 2.5) +
+    geom_line(aes(y = min_hr, colour = "Min HR"), linetype = "dotted", linewidth = 0.8) +
+    scale_colour_manual(values = c("Resting HR" = "#8e44ad",
+                                   "Max HR"     = "#e74c3c",
+                                   "Min HR"     = "#3498db")) +
+    labs(title = "Heart Rate — Last 30 Days", x = NULL, y = "BPM", colour = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+
+  ggplotly(p) %>% layout(hovermode = "x unified")
+
+  cat(sprintf("**Avg resting HR:** %.1f bpm  \n", mean(df$resting_hr, na.rm = TRUE)))
+  cat(sprintf("**Avg max HR:** %.1f bpm\n",     mean(df$max_hr,     na.rm = TRUE)))
+} else {
+  cat("No heart rate data found.")
+}
+```
+
+---
+
+# HRV (Heart Rate Variability)
+
+```{r hrv}
+df <- read_csv_safe("hrv") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(!is.na(last_night))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = date)) +
+    geom_col(aes(y = last_night, fill = last_night), alpha = 0.8, width = 0.8) +
+    geom_line(aes(y = weekly_avg, colour = "7-day avg"), linewidth = 1.8, na.rm = TRUE) +
+    scale_fill_gradient(low = "#f39c12", high = "#1abc9c", guide = "none") +
+    scale_colour_manual(values = c("7-day avg" = "#16a085")) +
+    labs(title = "HRV (SDNN) — Last 30 Days", x = NULL, y = "ms", colour = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+
+  ggplotly(p) %>% layout(hovermode = "x unified")
+
+  cat(sprintf("**Avg last-night HRV:** %.1f ms  \n", mean(df$last_night, na.rm = TRUE)))
+  cat(sprintf("**Avg weekly HRV:** %.1f ms\n",       mean(df$weekly_avg, na.rm = TRUE)))
+} else {
+  cat("No HRV data found (requires compatible Garmin device).")
+}
+```
+
+---
+
+# Sleep
+
+```{r sleep-stages}
+df <- read_csv_safe("sleep") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(total > 0)
+
+if (nrow(df) > 0) {
+  # Stacked bar — sleep stages
+  df_long <- df %>%
+    select(date, Deep = deep, Light = light, REM = rem, Awake = awake) %>%
+    pivot_longer(-date, names_to = "stage", values_to = "hours") %>%
+    mutate(stage = factor(stage, levels = c("Deep","REM","Light","Awake")))
+
+  p1 <- ggplot(df_long, aes(x = date, y = hours, fill = stage,
+               text = paste0(format(date,"%b %d"), "\n", stage, ": ", round(hours,2), " h"))) +
+    geom_col(width = 0.8, position = "stack") +
+    geom_hline(yintercept = 8, linetype = "dashed", colour = "darkgreen", linewidth = 0.7) +
+    scale_fill_manual(values = c("Deep" = "#1a237e", "REM" = "#80cbc4",
+                                 "Light" = "#5c6bc0", "Awake" = "#ef9a9a")) +
+    labs(title = "Sleep Stages — Last 30 Days", x = NULL, y = "Hours", fill = "Stage") +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+
+  ggplotly(p1, tooltip = "text") %>% layout(hovermode = "x unified")
+} else {
+  cat("No sleep data found.")
+}
+```
+
+```{r sleep-score}
+df <- read_csv_safe("sleep") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(!is.na(score))
+
+if (nrow(df) > 0) {
+  p2 <- ggplot(df, aes(x = date, y = score,
+               text = paste0(format(date,"%b %d"), "\nScore: ", score))) +
+    geom_col(aes(fill = score), width = 0.8) +
+    geom_smooth(colour = "#f39c12", se = FALSE, linewidth = 1.2) +
+    scale_fill_gradient(low = "#e74c3c", high = "#27ae60", guide = "none") +
+    labs(title = "Sleep Score — Last 30 Days", x = NULL, y = "Score (0–100)") +
+    theme_minimal(base_size = 13)
+
+  ggplotly(p2, tooltip = "text")
+
+  df_all <- read_csv_safe("sleep") %>% mutate(date = as.Date(date)) %>% filter(total > 0)
+  cat(sprintf("**Avg total sleep:** %.2f h/night  \n", mean(df_all$total, na.rm = TRUE)))
+  cat(sprintf("**Avg deep sleep:**  %.2f h  \n",       mean(df_all$deep,  na.rm = TRUE)))
+  cat(sprintf("**Avg REM sleep:**   %.2f h  \n",       mean(df_all$rem,   na.rm = TRUE)))
+  cat(sprintf("**Avg sleep score:** %.0f / 100\n",     mean(df$score,     na.rm = TRUE)))
+}
+```
+
+---
+
+# Body Battery
+
+```{r body-battery}
+df <- read_csv_safe("body_battery") %>%
+  mutate(datetime = as_datetime(datetime)) %>%
+  filter(!is.na(battery))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = datetime, y = battery,
+              text = paste0(format(datetime, "%b %d %H:%M"), "\nBattery: ", battery))) +
+    geom_area(fill = "#f39c12", alpha = 0.25) +
+    geom_line(colour = "#f39c12", linewidth = 0.8) +
+    geom_hline(yintercept = 25, linetype = "dashed", colour = "red", linewidth = 0.7) +
+    annotate("text", x = min(df$datetime), y = 27, label = "Low (25)",
+             hjust = 0, colour = "red", size = 3.5) +
+    scale_y_continuous(limits = c(0, 105)) +
+    labs(title = "Body Battery — Last 14 Days", x = NULL, y = "Level (0–100)") +
+    theme_minimal(base_size = 13)
+
+  ggplotly(p, tooltip = "text")
+
+  daily <- df %>%
+    mutate(day = as.Date(datetime)) %>%
+    group_by(day) %>%
+    summarise(max_bb = max(battery), min_bb = min(battery), .groups = "drop")
+
+  cat(sprintf("**Avg daily max:** %.0f  \n", mean(daily$max_bb)))
+  cat(sprintf("**Avg daily min:** %.0f\n",  mean(daily$min_bb)))
+} else {
+  cat("No body battery data found.")
+}
+```
+
+---
+
+# Stress
+
+```{r stress}
+df <- read_csv_safe("stress") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(!is.na(avg_stress))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = date, y = avg_stress, fill = avg_stress,
+              text = paste0(format(date,"%b %d"), "\nAvg stress: ", avg_stress))) +
+    geom_col(width = 0.8) +
+    scale_fill_gradient2(low = "#27ae60", mid = "#f1c40f", high = "#e74c3c",
+                         midpoint = 50, guide = "none") +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(title = "Daily Average Stress — Last 14 Days",
+         x = NULL, y = "Stress Level (0–100)") +
+    theme_minimal(base_size = 13)
+
+  ggplotly(p, tooltip = "text")
+
+  cat(sprintf("**Avg stress level:** %.1f / 100\n", mean(df$avg_stress)))
+} else {
+  cat("No stress data found.")
+}
+```
+
+---
+
+# Respiration Rate
+
+```{r respiration}
+df <- read_csv_safe("respiration") %>%
+  mutate(date = as.Date(date)) %>%
+  filter(!is.na(awake_brpm) | !is.na(sleep_brpm))
+
+if (nrow(df) > 0) {
+  df_long <- df %>%
+    pivot_longer(c(awake_brpm, sleep_brpm),
+                 names_to = "state", values_to = "brpm",
+                 names_pattern = "(.+)_brpm") %>%
+    mutate(state = recode(state, awake = "Awake", sleep = "Asleep"))
+
+  p <- ggplot(df_long, aes(x = date, y = brpm, colour = state, group = state,
+              text = paste0(format(date,"%b %d"), "\n", state, ": ", round(brpm,1), " brpm"))) +
+    geom_line(linewidth = 1.5) +
+    geom_point(size = 3) +
+    scale_colour_manual(values = c("Awake" = "#3498db", "Asleep" = "#9b59b6")) +
+    labs(title = "Respiration Rate — Last 14 Days",
+         x = NULL, y = "Breaths / min", colour = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+
+  ggplotly(p, tooltip = "text")
+} else {
+  cat("No respiration data found.")
+}
+```
+
+---
+
+# Blood Oxygen (SpO₂)
+
+```{r spo2}
+df <- read_csv_safe("spo2") %>%
+  mutate(datetime = as_datetime(datetime)) %>%
+  filter(!is.na(spo2))
+
+if (nrow(df) > 0) {
+  p <- ggplot(df, aes(x = datetime, y = spo2,
+              text = paste0(format(datetime,"%b %d %H:%M"), "\nSpO₂: ", spo2, "%"))) +
+    geom_area(fill = "#e74c3c", alpha = 0.15) +
+    geom_line(colour = "#e74c3c", linewidth = 0.7) +
+    geom_hline(yintercept = 95, linetype = "dashed", colour = "orange", linewidth = 0.7) +
+    annotate("text", x = min(df$datetime), y = 95.3, label = "95% threshold",
+             hjust = 0, colour = "darkorange", size = 3.5) +
+    scale_y_continuous(limits = c(85, 100)) +
+    labs(title = "Blood Oxygen (SpO₂) — Last 14 Days", x = NULL, y = "SpO₂ (%)") +
+    theme_minimal(base_size = 13)
+
+  ggplotly(p, tooltip = "text")
+
+  cat(sprintf("**Avg SpO₂:** %.1f%%  \n", mean(df$spo2)))
+  cat(sprintf("**Min SpO₂:** %.1f%%\n",  min(df$spo2)))
+} else {
+  cat("No SpO₂ data found (requires supported device).")
+}
+```
+
+---
+
+# Activities
+
+```{r activities-table}
+df <- read_csv_safe("activities")
+
+if (nrow(df) > 0) {
+  df %>%
+    select(Date = date, Type = type, `Distance (km)` = distance_km,
+           `Duration (min)` = duration_min, `Avg HR` = avg_hr,
+           Calories = calories, `Elevation (m)` = elevation_m) %>%
+    head(20) %>%
+    datatable(options = list(pageLength = 10, scrollX = TRUE),
+              caption = "Last 20 Activities")
+} else {
+  cat("No activities data found.")
+}
+```
+
+```{r activities-charts}
+df <- read_csv_safe("activities") %>% mutate(date = as.Date(date))
+
+if (nrow(df) > 0) {
+  # Activity type pie
+  type_counts <- df %>% count(type, sort = TRUE)
+  p1 <- plot_ly(type_counts, labels = ~type, values = ~n, type = "pie",
+                textposition = "inside", textinfo = "label+percent",
+                marker = list(colors = RColorBrewer::brewer.pal(
+                  min(nrow(type_counts), 8), "Set2"))) %>%
+    layout(title = "Activity Type Mix (last 50)", showlegend = TRUE)
+  p1
+
+  # Monthly minutes
+  df_month <- df %>%
+    mutate(month = floor_date(date, "month")) %>%
+    group_by(month) %>%
+    summarise(total_min = sum(duration_min, na.rm = TRUE), .groups = "drop")
+
+  p2 <- ggplot(df_month, aes(x = month, y = total_min,
+               text = paste0(format(month,"%b %Y"), "\n",
+                             round(total_min), " min"))) +
+    geom_col(fill = "#9b59b6", width = 20) +
+    scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") +
+    labs(title = "Monthly Activity Minutes",
+         x = NULL, y = "Total Minutes") +
+    theme_minimal(base_size = 13) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  ggplotly(p2, tooltip = "text")
+
+  # VO2 max trend
+  df_vo2 <- df %>% filter(!is.na(vo2max)) %>% arrange(date)
+  if (nrow(df_vo2) > 0) {
+    p3 <- ggplot(df_vo2, aes(x = date, y = vo2max,
+                 text = paste0(format(date,"%b %d"), "\nVO₂ Max: ", vo2max))) +
+      geom_line(colour = "#e67e22", linewidth = 1.5) +
+      geom_point(colour = "#e67e22", size = 3) +
+      labs(title = "VO₂ Max Over Time", x = NULL, y = "mL/(kg·min)") +
+      theme_minimal(base_size = 13)
+    ggplotly(p3, tooltip = "text")
+    cat(sprintf("\n**Latest VO₂ Max:** %.1f mL/kg/min\n", tail(df_vo2$vo2max, 1)))
+  }
+}
+```
+
+---
+
+# Today's Snapshot
+
+```{r snapshot}
+today <- Sys.Date()
+
+df_hr    <- read_csv_safe("heart_rate") %>% mutate(date = as.Date(date))
+df_steps <- read_csv_safe("steps")      %>% mutate(date = as.Date(date))
+df_sleep <- read_csv_safe("sleep")      %>% mutate(date = as.Date(date))
+df_hrv   <- read_csv_safe("hrv")        %>% mutate(date = as.Date(date))
+df_str   <- read_csv_safe("stress")     %>% mutate(date = as.Date(date))
+
+get_latest <- function(df, col, days = 1) {
+  df %>% filter(date >= today - days) %>% pull(!!sym(col)) %>% mean(na.rm = TRUE)
+}
+
+snapshot <- tibble(
+  Metric = c("Resting HR", "Steps (today)", "Last Night Sleep",
+             "Sleep Score", "HRV (last night)", "Avg Stress"),
+  Value  = c(
+    paste0(round(get_latest(df_hr,    "resting_hr")), " bpm"),
+    formatC(round(get_latest(df_steps, "steps")), format = "d", big.mark = ","),
+    paste0(round(get_latest(df_sleep,  "total"), 2), " h"),
+    as.character(round(get_latest(df_sleep, "score"))),
+    paste0(round(get_latest(df_hrv,   "last_night"), 1), " ms"),
+    paste0(round(get_latest(df_str,   "avg_stress")), " / 100")
+  )
+)
+
+knitr::kable(snapshot, align = c("l","r"),
+             caption = paste("Health Snapshot —", format(today, "%B %d, %Y")))
+```
