@@ -1,102 +1,4 @@
-# APEX Human
-
-## The Science
-
-The framework synthesises the leading schools of human optimisation:
-
-| Framework | Pioneer | Core Contribution |
-|---|---|---|
-| Medicine 3.0 | Peter Attia | Proactive longevity — prevent disease decades before symptoms; VO2 max and strength as primary mortality predictors |
-| Neuroscience Protocols | Andrew Huberman | Circadian biology, neurochemistry, and daily behavioural architecture to tune the nervous system |
-| Total Human Optimisation | Ben Greenfield | Stacking fitness, health, mind, spirit, and longevity interventions across all body systems |
-| Radical Quantification | Bryan Johnson (Blueprint) | Treat the body as an engineering system; measure 33,000+ biomarkers; reverse biological age measurably |
-| Peak State & Purpose | Tony Robbins | Physiology, focus, and meaning as the three levers of peak human state; RPM system for results-driven living |
-
-All converge on one insight: **no single metric, no single domain, and no single intervention defines performance. It is the interaction between all systems that determines who you are capable of becoming.**
-
----
-
-## The Seven Domains of the APEX Human
-
-### Domain 1 — Physical: The Body as Engine
-
-The physical foundation. Without it, everything else is constrained.
-
-**Cardiovascular Fitness**
-- VO2 Max — the single most powerful independent predictor of all-cause mortality available without invasive testing. Every 1 MET increase reduces mortality risk ~13%. Target: 75th–90th percentile for age minimum
-- Resting Heart Rate — trained baseline; 45–60 bpm optimal
-- Zone 2 Threshold — the metabolic zone that builds mitochondrial density and fat oxidation; target 150–180 min/week
-- Heart Rate Variability (HRV) — the most sensitive real-time measure of recovery and autonomic balance
-
-**Strength and Muscle**
-- Grip Strength — strongest proxy for total-body strength; independently predicts longevity
-- Lower Body Strength (1RM relative to bodyweight) — predicts fall risk, independence, and lifespan
-- Lean Muscle Mass (DEXA) — loss begins in the 30s; 0.5–1% per year without resistance training; skeletal muscle is the primary glucose disposal organ (70–80% of uptake)
-
-**Body Composition**
-- Visceral Adipose Tissue (VAT) — the most metabolically dangerous fat depot; drives systemic inflammation and insulin resistance
-- Body Fat % (DEXA gold standard)
-- Bone Mineral Density — fracture risk; loss accelerates post-40
-
-**Mobility and Stability**
-- Functional Movement Screen (FMS) — 7-movement kinetic chain assessment; score < 14/21 predicts injury
-- Single-Leg Balance — Attia's clinic tracks this as a direct longevity indicator
-- Hip Flexor and Overhead Mobility — markers of sedentary degeneration
-
----
-
-### Domain 2 — Metabolic: The Fuel System
-
-Metabolic dysfunction is the root of most chronic disease. It is also one of the most reversible systems through targeted intervention.
-
-**Key Metrics**
-- Fasting Blood Glucose — target 70–85 mg/dL (not the clinical "normal" of < 100)
-- HbA1c — 90-day average blood sugar; target ≤ 5.4%
-- Fasting Insulin — target < 5 μIU/mL; most labs pass < 25 as "normal" — far too generous
-- HOMA-IR — composite insulin resistance score; target < 1.0
-- Continuous Glucose Monitor (CGM) — real-time glucose: time-in-range, variability, mean, post-meal response
-- Triglycerides / HDL ratio — target < 2.0; ideally ~1.0
-
----
-
-### Domain 3 — Biochemical & Hormonal: The Chemical Signalling Layer
-
-Every physical and mental performance output is mediated by chemistry. Most people are operating with suboptimal levels — without knowing it.
-
-**Core Blood Panel (Longevity-Optimised)**
-
-| Biomarker | Optimal Target | What It Drives |
-|---|---|---|
-| ApoB | < 70 mg/dL | Atherosclerosis risk — superior to LDL-C |
-| Lp(a) | < 50 mg/dL | Genetic cardiovascular risk; immutable |
-| hs-CRP | < 1.0 mg/L | Systemic inflammation |
-| Homocysteine | < 10 μmol/L | Inflammation + methylation; CVD + cognitive risk |
-| Vitamin D (25-OH) | 50–80 ng/mL | Immunity, mood, bone, testosterone, inflammation |
-| Ferritin | 50–200 ng/mL (men) | Iron storage; fatigue, oxidative stress |
-| Magnesium (RBC) | 5.2–6.5 mg/dL | 300+ enzymatic reactions; most people deficient |
-| Omega-3 Index | > 8% | EPA+DHA in red blood cells; cardiovascular protection |
-
-**Hormonal Optimisation Panel**
-
-| Biomarker | Optimal Target | Performance Role |
-|---|---|---|
-| Total Testosterone | 600–900 ng/dL (men) | Muscle anabolism, drive, cognition |
-| Free Testosterone | 15–25 pg/mL | Bioavailable fraction — affected by SHBG |
-| DHEA-S | Upper age-adjusted range | Adrenal resilience; cortisol buffer |
-| Cortisol (AM curve) | Peak 15–25 μg/dL at 8am | Stress hormone; dysregulated = burnout |
-| IGF-1 | 120–180 ng/mL | Growth hormone proxy; muscle and longevity sweet spot |
-| Thyroid (TSH, Free T3, T4, rT3) | TSH 0.5–2.5; T3 upper third | Metabolic rate, energy, cognition |
-
-**Cutting-Edge Biomarkers**
-
-| Biomarker | Test | What It Reveals |
-|---|---|---|
-| Epigenetic Age (DunedinPACE) | TruDiagnostic TruAge | Pace of biological aging vs. chronological age; target < 1.0 |
-| Gut Microbiome Diversity | Viome / Genova GI360 | Species richness; SCFA production; inflammation risk |
-| NAD+ Levels | Intracellular blood test | Cellular energy currency; declines 50% by age 50 |
-| Heavy Metals Panel | Quicksilver Scientific | Mercury, lead, arsenic — cognitive and mitochondrial toxins |
-
----
+# APEX Human Research & Mana Health App
 
 ## The APEX Human
 
@@ -118,7 +20,35 @@ No domain operates alone. The interactions between them — sleep affecting horm
 
 ---
 
-## Core Philosophy
+## Mana Health App
+
+### Overview
+
+**Mana Health** is a personal health intelligence platform designed to optimize human performance using data. It is the engineering implementation of the APEX Human framework — integrating **biological, behavioral, and environmental data** into a single system that analyzes patterns and generates insights to help you perform at the highest level in sports, health, and daily life.
+
+Mana Health combines data from:
+
+* Blood work biomarkers
+* Wearable health devices (Garmin / Apple Watch)
+* Smart scale body composition
+* Training performance metrics
+* Nutrition tracking
+* Sleep and recovery data
+* Lifestyle habits and routines
+
+The platform uses data engineering, statistical analysis, and machine learning to identify patterns and recommend optimizations that improve:
+
+* Athletic performance
+* Recovery and fatigue management
+* Energy levels
+* Metabolic health
+* Longevity and resilience
+
+The long-term vision is to create a **data-driven personal optimization engine for human performance.**
+
+---
+
+### Core Philosophy
 
 High-level performance in sport and life depends on the interaction of multiple systems:
 
