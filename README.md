@@ -1,4 +1,4 @@
-# APEX Human Research & Mana Health App
+# APEX-Human-ManaHealthApp
 
 ## The APEX Human
 
