@@ -1,32 +1,120 @@
-# Mana Health App
+# APEX Human
 
-## Overview
+## The Science
 
-**Mana Health** is a personal health intelligence platform designed to optimize human performance using data.
+The framework synthesises the leading schools of human optimisation:
 
-The goal is to measure, understand, and continually improve every system that drives human health — physical, metabolic, hormonal, cognitive, psychological, environmental, and purposeful — so that each person can perform at their highest potential, sustainably, across all areas of life.
+| Framework | Pioneer | Core Contribution |
+|---|---|---|
+| Medicine 3.0 | Peter Attia | Proactive longevity — prevent disease decades before symptoms; VO2 max and strength as primary mortality predictors |
+| Neuroscience Protocols | Andrew Huberman | Circadian biology, neurochemistry, and daily behavioural architecture to tune the nervous system |
+| Total Human Optimisation | Ben Greenfield | Stacking fitness, health, mind, spirit, and longevity interventions across all body systems |
+| Radical Quantification | Bryan Johnson (Blueprint) | Treat the body as an engineering system; measure 33,000+ biomarkers; reverse biological age measurably |
+| Peak State & Purpose | Tony Robbins | Physiology, focus, and meaning as the three levers of peak human state; RPM system for results-driven living |
 
-The platform integrates **biological, behavioral, and environmental data** into a single system that analyzes patterns and generates insights to help individuals perform at the highest level in **sports, health, and daily life**.
+All converge on one insight: **no single metric, no single domain, and no single intervention defines performance. It is the interaction between all systems that determines who you are capable of becoming.**
 
-Mana Health combines data from:
+---
 
-* Blood work biomarkers
-* Wearable health devices (Garmin / Apple Watch)
-* Smart scale body composition
-* Training performance metrics
-* Nutrition tracking
-* Sleep and recovery data
-* Lifestyle habits and routines
+## The Seven Domains of the APEX Human
 
-The platform uses data engineering, statistical analysis, and machine learning to identify patterns and recommend optimizations that improve:
+### Domain 1 — Physical: The Body as Engine
 
-* Athletic performance
-* Recovery and fatigue management
-* Energy levels
-* Metabolic health
-* Longevity and resilience
+The physical foundation. Without it, everything else is constrained.
 
-The long-term vision is to create a **data-driven personal optimization engine for human performance.**
+**Cardiovascular Fitness**
+- VO2 Max — the single most powerful independent predictor of all-cause mortality available without invasive testing. Every 1 MET increase reduces mortality risk ~13%. Target: 75th–90th percentile for age minimum
+- Resting Heart Rate — trained baseline; 45–60 bpm optimal
+- Zone 2 Threshold — the metabolic zone that builds mitochondrial density and fat oxidation; target 150–180 min/week
+- Heart Rate Variability (HRV) — the most sensitive real-time measure of recovery and autonomic balance
+
+**Strength and Muscle**
+- Grip Strength — strongest proxy for total-body strength; independently predicts longevity
+- Lower Body Strength (1RM relative to bodyweight) — predicts fall risk, independence, and lifespan
+- Lean Muscle Mass (DEXA) — loss begins in the 30s; 0.5–1% per year without resistance training; skeletal muscle is the primary glucose disposal organ (70–80% of uptake)
+
+**Body Composition**
+- Visceral Adipose Tissue (VAT) — the most metabolically dangerous fat depot; drives systemic inflammation and insulin resistance
+- Body Fat % (DEXA gold standard)
+- Bone Mineral Density — fracture risk; loss accelerates post-40
+
+**Mobility and Stability**
+- Functional Movement Screen (FMS) — 7-movement kinetic chain assessment; score < 14/21 predicts injury
+- Single-Leg Balance — Attia's clinic tracks this as a direct longevity indicator
+- Hip Flexor and Overhead Mobility — markers of sedentary degeneration
+
+---
+
+### Domain 2 — Metabolic: The Fuel System
+
+Metabolic dysfunction is the root of most chronic disease. It is also one of the most reversible systems through targeted intervention.
+
+**Key Metrics**
+- Fasting Blood Glucose — target 70–85 mg/dL (not the clinical "normal" of < 100)
+- HbA1c — 90-day average blood sugar; target ≤ 5.4%
+- Fasting Insulin — target < 5 μIU/mL; most labs pass < 25 as "normal" — far too generous
+- HOMA-IR — composite insulin resistance score; target < 1.0
+- Continuous Glucose Monitor (CGM) — real-time glucose: time-in-range, variability, mean, post-meal response
+- Triglycerides / HDL ratio — target < 2.0; ideally ~1.0
+
+---
+
+### Domain 3 — Biochemical & Hormonal: The Chemical Signalling Layer
+
+Every physical and mental performance output is mediated by chemistry. Most people are operating with suboptimal levels — without knowing it.
+
+**Core Blood Panel (Longevity-Optimised)**
+
+| Biomarker | Optimal Target | What It Drives |
+|---|---|---|
+| ApoB | < 70 mg/dL | Atherosclerosis risk — superior to LDL-C |
+| Lp(a) | < 50 mg/dL | Genetic cardiovascular risk; immutable |
+| hs-CRP | < 1.0 mg/L | Systemic inflammation |
+| Homocysteine | < 10 μmol/L | Inflammation + methylation; CVD + cognitive risk |
+| Vitamin D (25-OH) | 50–80 ng/mL | Immunity, mood, bone, testosterone, inflammation |
+| Ferritin | 50–200 ng/mL (men) | Iron storage; fatigue, oxidative stress |
+| Magnesium (RBC) | 5.2–6.5 mg/dL | 300+ enzymatic reactions; most people deficient |
+| Omega-3 Index | > 8% | EPA+DHA in red blood cells; cardiovascular protection |
+
+**Hormonal Optimisation Panel**
+
+| Biomarker | Optimal Target | Performance Role |
+|---|---|---|
+| Total Testosterone | 600–900 ng/dL (men) | Muscle anabolism, drive, cognition |
+| Free Testosterone | 15–25 pg/mL | Bioavailable fraction — affected by SHBG |
+| DHEA-S | Upper age-adjusted range | Adrenal resilience; cortisol buffer |
+| Cortisol (AM curve) | Peak 15–25 μg/dL at 8am | Stress hormone; dysregulated = burnout |
+| IGF-1 | 120–180 ng/mL | Growth hormone proxy; muscle and longevity sweet spot |
+| Thyroid (TSH, Free T3, T4, rT3) | TSH 0.5–2.5; T3 upper third | Metabolic rate, energy, cognition |
+
+**Cutting-Edge Biomarkers**
+
+| Biomarker | Test | What It Reveals |
+|---|---|---|
+| Epigenetic Age (DunedinPACE) | TruDiagnostic TruAge | Pace of biological aging vs. chronological age; target < 1.0 |
+| Gut Microbiome Diversity | Viome / Genova GI360 | Species richness; SCFA production; inflammation risk |
+| NAD+ Levels | Intracellular blood test | Cellular energy currency; declines 50% by age 50 |
+| Heavy Metals Panel | Quicksilver Scientific | Mercury, lead, arsenic — cognitive and mitochondrial toxins |
+
+---
+
+## The APEX Human
+
+The north star of this project is the **APEX Human** — a person who consistently performs at their highest potential across body, mind, and environment, sustainably over a lifetime.
+
+This means optimising seven interconnected domains simultaneously:
+
+| Domain | What It Covers |
+|---|---|
+| Physical | VO2 max, strength, body composition, mobility |
+| Metabolic | Blood glucose, insulin sensitivity, CGM data |
+| Biochemical / Hormonal | Blood biomarkers, hormones, epigenetic age |
+| Cognitive | Working memory, processing speed, focus, BDNF |
+| Psychological | HRV, resilience, emotional regulation, wellbeing |
+| Environmental | Light, air quality, temperature, nature exposure |
+| Purpose & Meaning | Ikigai, values, social connection, flow state |
+
+No domain operates alone. The interactions between them — sleep affecting hormones, stress degrading gut integrity, muscle mass determining glucose metabolism — are where performance is actually determined. Mana Health exists to map those interactions and turn them into actionable intelligence.
 
 ---
 
@@ -400,18 +488,84 @@ apple_health_export/
 
 ---
 
-## Roadmap
+## Roadmap to the APEX Human
+
+### Phase 1 — Wearable Foundation (Current)
+Track the continuous physiological signals that define physical and recovery status.
 
 - [x] Garmin Connect API integration
 - [x] Interactive HTML dashboard
 - [x] Jupyter notebook dashboard
 - [x] R Markdown dashboard
-- [ ] Blood work biomarker tracking module
-- [ ] Smart scale integration
-- [ ] Nutrition log integration
-- [ ] Correlation engine (HRV vs performance, sleep vs steps, etc.)
-- [ ] Predictive fatigue model
-- [ ] Unified web application
+- [ ] Apple Watch / Oura Ring integration
+- [ ] HRV-based daily readiness score
+
+### Phase 2 — Metabolic Layer
+Understand how the body processes fuel and manages blood sugar — the engine behind energy, performance, and longevity.
+
+- [ ] Continuous glucose monitoring (CGM) integration — Levels / Dexcom
+- [ ] Smart scale integration (Withings) — body composition over time
+- [ ] Nutrition log integration — calories, macros, meal timing
+- [ ] Metabolic score: glucose variability, time-in-range, fasting insulin trend
+
+### Phase 3 — Biochemical & Hormonal Layer
+Surface what the bloodwork reveals — the chemical signals that drive everything from recovery capacity to cognitive sharpness.
+
+- [ ] Blood work biomarker tracking module — manual entry + trend analysis
+- [ ] Hormone panel tracking — testosterone, cortisol curve, thyroid, Vitamin D
+- [ ] Supplement and medication logging
+- [ ] Epigenetic age tracking (TruDiagnostic TruAge) — DunedinPACE over time
+
+### Phase 4 — Cognitive Layer
+Measure and improve the brain's capacity for focus, learning, and decision-making.
+
+- [ ] Daily cognitive assessment module — reaction time, working memory, processing speed
+- [ ] Flow state frequency tracking
+- [ ] Sleep architecture → cognitive performance correlation
+- [ ] EEG integration (Muse S) — attention quality and meditation depth
+
+### Phase 5 — Psychological Layer
+Quantify resilience, emotional regulation, and wellbeing — the foundation that determines how much of your biological capacity you can actually access.
+
+- [ ] Daily check-in — subjective energy, focus, mood, stress (1-minute input)
+- [ ] PERMA wellbeing score — tracked weekly
+- [ ] HRV ↔ mood correlation — does measured recovery predict reported wellbeing?
+- [ ] Cortisol diurnal curve — salivary testing logged over time
+
+### Phase 6 — Environmental Layer
+Monitor the invisible inputs — light, air, temperature — that shape biology passively and continuously.
+
+- [ ] Indoor air quality integration (Awair / IQAir) — CO2, PM2.5, VOCs
+- [ ] Morning sunlight and evening light exposure logging
+- [ ] Sleep environment tracking — temperature, darkness, noise
+- [ ] Sauna and cold exposure session logging
+
+### Phase 7 — Intelligence Engine
+Move from dashboards to decisions — correlate every domain, detect patterns, and generate personalised recommendations.
+
+- [ ] Cross-domain correlation engine — what affects what, with what time lag?
+- [ ] Personal baseline modelling — individual reference ranges, not population averages
+- [ ] Predictive fatigue model from HRV, sleep, and training load
+- [ ] Injury risk scoring from overtraining signals
+- [ ] LLM-powered natural language insights ("Your glucose variability was highest on days following under 5 hours of sleep")
+- [ ] Priority intervention queue — top 3 actions most likely to move the needle today
+
+### Phase 8 — Purpose & Meaning Layer
+The most overlooked domain with the strongest longitudinal evidence for longevity and sustained performance.
+
+- [ ] Ikigai and meaning-in-life score — tracked over time
+- [ ] Values clarity and goal alignment module
+- [ ] Social connection metrics — relationship quality, loneliness index
+- [ ] Weekly reflection and RPM planning integration
+
+### Phase 9 — Unified APEX Dashboard
+Bring every domain into a single, unified application.
+
+- [ ] Web application with full cross-domain dashboard
+- [ ] APEX Score — a single daily composite score across all seven domains
+- [ ] Mobile-responsive interface
+- [ ] Weekly and monthly performance reports
+- [ ] Longitudinal trends across all biomarkers and lifestyle inputs
 
 ---
 
